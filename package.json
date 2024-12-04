@@ -1,0 +1,27 @@
+{
+  "name": "alfaker",
+  "version": "1.0.0",
+  "description": "> A blazing fast fake data generator for Alfred, powered by Deno and Faker.js. Generate realistic test data without leaving your workflow.",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "node build.js",
+    "package": "npm run build && ./scripts/package.sh"
+  },
+  "keywords": [
+    "alfred",
+    "workflow",
+    "faker"
+  ],
+  "author": "Muhammad Asif Javed <axif.javed@gmail.com> (https://github.com/maxifjaved)",
+  "license": "MIT",
+  "dependencies": {
+    "@faker-js/faker": "^9.2.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.19.5"
+  },
+  "volta": {
+    "node": "22.12.0"
+  }
+}

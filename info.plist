@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>bundleid</key>
+    <string>com.maxifjaved.alfaker</string>
+    <key>category</key>
+    <string>Development</string>
+    <key>connections</key>
+    <dict>
+        <key>2463BF23-0E75-4A85-A328-11963FF19F91</key>
+        <array>
+            <dict>
+                <key>destinationuid</key>
+                <string>58484F46-2EA4-4773-B619-7CA1CA908019</string>
+                <key>modifiers</key>
+                <integer>0</integer>
+                <key>modifiersubtext</key>
+                <string></string>
+                <key>vitoclose</key>
+                <false/>
+            </dict>
+        </array>
+    </dict>
+    <key>createdby</key>
+    <string>Asif Javed</string>
+    <key>description</key>
+    <string>A blazing fast fake data generator for Alfred, powered by Deno and Faker.js. Generate realistic test data without leaving your workflow.</string>
+    <key>disabled</key>
+    <false/>
+    <key>name</key>
+    <string>Alfaker</string>
+    <key>objects</key>
+    <array>
+        <dict>
+            <key>config</key>
+            <dict>
+                <key>argumenttype</key>
+                <integer>0</integer>
+                <key>keyword</key>
+                <string>alfaker</string>
+                <key>subtext</key>
+                <string>Generate fake data (person, company, internet, finance, help)</string>
+                <key>text</key>
+                <string>Alfaker</string>
+                <key>withspace</key>
+                <true/>
+            </dict>
+            <key>type</key>
+            <string>alfred.workflow.input.keyword</string>
+            <key>uid</key>
+            <string>2463BF23-0E75-4A85-A328-11963FF19F91</string>
+            <key>version</key>
+            <integer>1</integer>
+        </dict>
+        <dict>
+            <key>config</key>
+            <dict>
+                <key>concurrently</key>
+                <false/>
+                <key>escaping</key>
+                <integer>102</integer>
+                <key>script</key>
+                <string>#!/bin/bash
+
+# Ensure log directory exists
+LOG_DIR="$HOME/Library/Logs"
+LOG_FILE="$LOG_DIR/alfaker.log"
+mkdir -p "$LOG_DIR"
+touch "$LOG_FILE"
+
+# Get the directory where the workflow is installed
+WORKFLOW_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Log execution time and command
+{
+    echo "----------------------------------------"
+    echo "$(date): Running alfaker"
+    echo "Command: alfaker $1"
+    echo "Working directory: $WORKFLOW_DIR"
+    echo "PATH: $PATH"
+    echo "Node version: $(node --version)"
+} >> "$LOG_FILE" 2>&1
+
+# Point to the correct index.js location
+INDEX_JS="$WORKFLOW_DIR/dist/index.js"
+
+# Log script location
+echo "Script location: $INDEX_JS" >> "$LOG_FILE"
+
+# Check if the bundled script exists
+if [ ! -f "$INDEX_JS" ]; then
+    echo "Error: index.js not found at $INDEX_JS" >> "$LOG_FILE"
+    echo "{\"items\":[{\"title\":\"Error: Script not found\",\"subtitle\":\"Workflow files are missing or not built properly\",\"valid\":false}]}"
+    exit 1
+fi
+
+# Ensure it's executable
+chmod +x "$INDEX_JS"
+
+# Run the script and capture output and errors
+OUTPUT=$(node "$INDEX_JS" "$1" 2>> "$LOG_FILE")
+EXIT_CODE=$?
+
+# Log the output and exit code
+{
+    echo "Exit code: $EXIT_CODE"
+    echo "Output: $OUTPUT"
+    echo "----------------------------------------"
+} >> "$LOG_FILE"
+
+# Return the output to Alfred
+echo "$OUTPUT"</string>
+                <key>scriptargtype</key>
+                <integer>1</integer>
+                <key>scriptfile</key>
+                <string></string>
+                <key>type</key>
+                <integer>0</integer>
+            </dict>
+            <key>type</key>
+            <string>alfred.workflow.action.script</string>
+            <key>uid</key>
+            <string>58484F46-2EA4-4773-B619-7CA1CA908019</string>
+            <key>version</key>
+            <integer>2</integer>
+        </dict>
+    </array>
+    <key>readme</key>
+    <string># Alfaker
+
+A blazing fast fake data generator powered by Faker.js.
+
+## Available Commands:
+- alfaker person   - Generate person details
+- alfaker company  - Generate company information
+- alfaker internet - Generate internet-related data
+- alfaker finance  - Generate financial information
+- alfaker help     - Show all available commands
+
+## Debug Information
+Logs are available at: ~/Library/Logs/alfaker.log
+
+## Author
+Created by Asif Javed (maxifjaved)</string>
+    <key>uidata</key>
+    <dict>
+        <key>2463BF23-0E75-4A85-A328-11963FF19F91</key>
+        <dict>
+            <key>note</key>
+            <string>Keyword Input</string>
+            <key>xpos</key>
+            <integer>100</integer>
+            <key>ypos</key>
+            <integer>100</integer>
+        </dict>
+        <key>58484F46-2EA4-4773-B619-7CA1CA908019</key>
+        <dict>
+            <key>note</key>
+            <string>Run Script</string>
+            <key>xpos</key>
+            <integer>300</integer>
+            <key>ypos</key>
+            <integer>100</integer>
+        </dict>
+    </dict>
+    <key>version</key>
+    <string>1.0.0</string>
+    <key>webaddress</key>
+    <string>https://github.com/maxifjaved/alfaker</string>
+</dict>
+</plist>
